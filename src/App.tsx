@@ -23,7 +23,7 @@ function makeGame(name = "New game"): Game {
     name,
     createdAt: now,
     updatedAt: now,
-    settings: { buyInAmount: 10, currency: "EUR" },
+    settings: { buyInAmount: 10 },
     players: [],
   };
 }
@@ -113,7 +113,7 @@ export default function App() {
     }));
 
   const players = activeGame?.players ?? [];
-  const settings = activeGame?.settings ?? { buyInAmount: 10, currency: "EUR" as const };
+  const settings = activeGame?.settings ?? { buyInAmount: 10 };
 
   const nets = useMemo(() => computeNets(players, settings.buyInAmount), [players, settings.buyInAmount]);
   const balance = useMemo(() => computeBalance(nets), [nets]);
