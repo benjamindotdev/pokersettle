@@ -34,6 +34,17 @@ export function GameSettingsPanel({
   onResetGame,
   onDeleteGame,
 }: Props) {
+  // Compute "(N)" suffixes against chronological order so the earliest game on
+  // a given date has no suffix and later ones get (2), (3), ...
+  const chronological = [...games].sort((a, b) => a.createdAt - b.createdAt);
+  const labelById = new Map<string, string>();
+  const counts = new Map<string, number>();
+  for (const g of chronological) {
+    const date = formatGameDate(g.createdAt);
+    const next = (counts.get(date) ?? 0) + 1;
+    counts.set(date, next);
+    labelById.set(g.id, next === 1 ? date : `${date} (${next})`);
+  }
   const sortedGames = [...games].sort((a, b) => b.createdAt - a.createdAt);
 
   return (
@@ -53,7 +64,7 @@ export function GameSettingsPanel({
           >
             {sortedGames.map((g) => (
               <option key={g.id} value={g.id}>
-                {formatGameDate(g.createdAt)}
+                {labelById.get(g.id) ?? formatGameDate(g.createdAt)}
               </option>
             ))}
           </select>
