@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Coins, Users, ArrowLeftRight, TrendingUp, TrendingDown } from "lucide-react";
-import { formatCents, formatCentsSigned } from "@/lib/formatting";
+import { Coins, Users, ArrowLeftRight } from "lucide-react";
+import { formatCents } from "@/lib/formatting";
 import type { SettlementSummary } from "@/lib/settlement";
 
 interface Props {
@@ -23,25 +23,11 @@ export function SummaryCards({ summary }: Props) {
       label: "Transfers needed",
       value: String(summary.transferCount),
       icon: <ArrowLeftRight className="size-4 text-primary" />,
-    },
-    {
-      label: "Biggest winner",
-      value: summary.biggestWinner
-        ? `${summary.biggestWinner.name} ${formatCentsSigned(summary.biggestWinner.netCents)}`
-        : "—",
-      icon: <TrendingUp className="size-4 text-success" />,
-    },
-    {
-      label: "Biggest loser",
-      value: summary.biggestLoser
-        ? `${summary.biggestLoser.name} ${formatCentsSigned(summary.biggestLoser.netCents)}`
-        : "—",
-      icon: <TrendingDown className="size-4 text-destructive" />,
-    },
+    }
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+    <div className="grid grid-cols-3 gap-2 lg:grid-cols-5">
       {items.map((it) => (
         <Card key={it.label}>
           <CardHeader className="pb-1">

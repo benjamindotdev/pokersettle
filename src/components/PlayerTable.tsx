@@ -1,6 +1,8 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { formatCents, formatCentsSigned } from "@/lib/formatting";
 import type { Player, PlayerNet } from "@/types/poker";
@@ -12,6 +14,52 @@ interface Props {
   onChangeFinalValue: (id: string, finalValue: number) => void;
 }
 
+interface BuyInStepperProps {
+  value: number;
+  onChange: (next: number) => void;
+  ariaLabel?: string;
+}
+
+function BuyInStepper({ value, onChange, ariaLabel }: BuyInStepperProps) {
+  const dec = () => onChange(Math.max(0, value - 1));
+  const inc = () => onChange(value + 1);
+  return (
+    <div
+      className="inline-flex items-center rounded-md border border-border bg-input"
+      role="group"
+      aria-label={ariaLabel ?? "Buy-ins"}
+    >
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="h-10 w-10 rounded-r-none"
+        onClick={dec}
+        disabled={value <= 0}
+        aria-label="Decrease buy-ins"
+      >
+        <ChevronLeft className="size-4" />
+      </Button>
+      <span
+        className="min-w-8 text-center text-base font-semibold tabular-nums select-none"
+        aria-live="polite"
+      >
+        {value}
+      </span>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="h-10 w-10 rounded-l-none"
+        onClick={inc}
+        aria-label="Increase buy-ins"
+      >
+        <ChevronRight className="size-4" />
+      </Button>
+    </div>
+  );
+}
+
 export function PlayerTable({ players, nets, onChangeBuyIns, onChangeFinalValue }: Props) {
   const netById = new Map(nets.map((n) => [n.playerId, n]));
 
@@ -19,9 +67,6 @@ export function PlayerTable({ players, nets, onChangeBuyIns, onChangeFinalValue 
     <Card>
       <CardHeader>
         <CardTitle>Results</CardTitle>
-        <CardDescription>
-          Enter how many buy-ins each player took and their final chip value.
-        </CardDescription>
       </CardHeader>
       <CardContent>
         {players.length === 0 ? (
@@ -53,23 +98,11 @@ export function PlayerTable({ players, nets, onChangeBuyIns, onChangeFinalValue 
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="grid gap-1">
-                        <Label htmlFor={`bi-${p.id}`} className="text-xs text-muted-foreground">
-                          Buy-ins
-                        </Label>
-                        <Input
-                          id={`bi-${p.id}`}
-                          type="number"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          min={0}
-                          step={1}
-                          placeholder="0"
-                          value={p.buyIns === 0 ? "" : p.buyIns}
-                          onFocus={(e) => e.currentTarget.select()}
-                          onChange={(e) => {
-                            const v = parseInt(e.target.value, 10);
-                            onChangeBuyIns(p.id, Number.isFinite(v) && v >= 0 ? v : 0);
-                          }}
+                        <Label className="text-xs text-muted-foreground">Buy-ins</Label>
+                        <BuyInStepper
+                          value={p.buyIns}
+                          onChange={(v) => onChangeBuyIns(p.id, v)}
+                          ariaLabel={`Buy-ins for ${p.name || "player"}`}
                         />
                       </div>
                       <div className="grid gap-1">
@@ -91,10 +124,6 @@ export function PlayerTable({ players, nets, onChangeBuyIns, onChangeFinalValue 
                           }}
                         />
                       </div>
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Paid in:{" "}
-                      <span className="tabular-nums">{formatCents(n?.paidInCents ?? 0)}</span>
                     </div>
                   </li>
                 );
@@ -121,19 +150,10 @@ export function PlayerTable({ players, nets, onChangeBuyIns, onChangeFinalValue 
                       <tr key={p.id} className="border-b border-border last:border-0">
                         <td className="py-2 pr-3 font-medium">{p.name || "—"}</td>
                         <td className="py-2 px-3">
-                          <Input
-                            type="number"
-                            inputMode="numeric"
-                            min={0}
-                            step={1}
-                            placeholder="0"
-                            value={p.buyIns === 0 ? "" : p.buyIns}
-                            onFocus={(e) => e.currentTarget.select()}
-                            onChange={(e) => {
-                              const v = parseInt(e.target.value, 10);
-                              onChangeBuyIns(p.id, Number.isFinite(v) && v >= 0 ? v : 0);
-                            }}
-                            className="h-9"
+                          <BuyInStepper
+                            value={p.buyIns}
+                            onChange={(v) => onChangeBuyIns(p.id, v)}
+                            ariaLabel={`Buy-ins for ${p.name || "player"}`}
                           />
                         </td>
                         <td className="py-2 px-3 text-muted-foreground tabular-nums">

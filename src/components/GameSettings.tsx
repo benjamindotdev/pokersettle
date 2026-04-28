@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -50,9 +50,6 @@ export function GameSettingsPanel({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Game settings</CardTitle>
-      </CardHeader>
       <CardContent className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2 sm:col-span-2">
           <Label htmlFor="active-game">Active game</Label>

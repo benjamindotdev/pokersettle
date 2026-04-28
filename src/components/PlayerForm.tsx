@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Trash2, UserPlus } from "lucide-react";
@@ -25,7 +25,6 @@ export function PlayerForm({ players, onAdd, onRemove, onRename }: Props) {
     <Card>
       <CardHeader>
         <CardTitle>Players</CardTitle>
-        <CardDescription>Add the players who joined the game.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
         <form
@@ -41,13 +40,10 @@ export function PlayerForm({ players, onAdd, onRemove, onRename }: Props) {
             onChange={(e) => setName(e.target.value)}
           />
           <Button type="submit">
-            <UserPlus className="size-4" /> Add
+            <UserPlus className="size-4" />
           </Button>
         </form>
 
-        {players.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No players yet. Add one above.</p>
-        ) : (
           <ul className="grid gap-2">
             {players.map((p) => (
               <li key={p.id} className="flex items-center gap-2">
@@ -66,7 +62,6 @@ export function PlayerForm({ players, onAdd, onRemove, onRename }: Props) {
               </li>
             ))}
           </ul>
-        )}
       </CardContent>
     </Card>
   );
