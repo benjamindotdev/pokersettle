@@ -63,7 +63,7 @@ export function GameSettingsPanel({
             </select>
           </div>
           <div className="ml-auto flex flex-wrap gap-2">
-            <Button variant="secondary" onClick={onNewGame} aria-label="New game" title="New game">
+            <Button onClick={onNewGame} aria-label="New game" title="New game">
               <Plus className="size-4" />
               <span className="sr-only sm:not-sr-only">New game</span>
             </Button>
