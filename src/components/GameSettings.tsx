@@ -45,46 +45,48 @@ export function GameSettingsPanel({
 
   return (
     <Card>
-      <CardContent className="grid gap-4 sm:grid-cols-2">
-        <div className="grid gap-2 sm:col-span-2">
-          <Label htmlFor="active-game">Active game</Label>
-          <select
-            id="active-game"
-            value={activeGameId}
-            onChange={(e) => onSelectGame(e.target.value)}
-            className="h-11 w-full rounded-md border border-border bg-input px-3 text-base sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-          >
-            {sortedGames.map((g) => (
-              <option key={g.id} value={g.id}>
-                {labelById.get(g.id) ?? formatGameDate(g.createdAt)}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="sm:col-span-2 flex flex-wrap gap-2 pt-2">
-          <Button variant="secondary" onClick={onNewGame} aria-label="New game" title="New game">
-            <Plus className="size-4" />
-            <span className="sr-only sm:not-sr-only">New game</span>
-          </Button>
-          <Button
-            variant="outline"
-            onClick={onResetGame}
-            aria-label="Reset current game"
-            title="Reset current game"
-          >
-            <RotateCcw className="size-4" />
-            <span className="sr-only sm:not-sr-only">Reset</span>
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={onDeleteGame}
-            disabled={games.length <= 1}
-            aria-label={games.length <= 1 ? "Can't delete the only game" : "Delete this game"}
-            title={games.length <= 1 ? "Can't delete the only game" : "Delete this game"}
-          >
-            <Trash2 className="size-4" />
-            <span className="sr-only sm:not-sr-only">Delete</span>
-          </Button>
+      <CardContent>
+        <div className="flex flex-wrap items-end gap-2">
+          <div className="grid gap-2 flex-1 min-w-[50%]">
+            <Label htmlFor="active-game">Active game</Label>
+            <select
+              id="active-game"
+              value={activeGameId}
+              onChange={(e) => onSelectGame(e.target.value)}
+              className="h-11 w-full rounded-md border border-border bg-input px-3 text-base sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            >
+              {sortedGames.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {labelById.get(g.id) ?? formatGameDate(g.createdAt)}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="ml-auto flex flex-wrap gap-2">
+            <Button variant="secondary" onClick={onNewGame} aria-label="New game" title="New game">
+              <Plus className="size-4" />
+              <span className="sr-only sm:not-sr-only">New game</span>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={onResetGame}
+              aria-label="Reset current game"
+              title="Reset current game"
+            >
+              <RotateCcw className="size-4" />
+              <span className="sr-only sm:not-sr-only">Reset</span>
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={onDeleteGame}
+              disabled={games.length <= 1}
+              aria-label={games.length <= 1 ? "Can't delete the only game" : "Delete this game"}
+              title={games.length <= 1 ? "Can't delete the only game" : "Delete this game"}
+            >
+              <Trash2 className="size-4" />
+              <span className="sr-only sm:not-sr-only">Delete</span>
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
