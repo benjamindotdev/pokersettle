@@ -15,12 +15,11 @@ const players = (data: Array<Partial<Player> & { name: string }>): Player[] =>
     finalValue: p.finalValue ?? 0,
   }));
 
-// €10 buy-in, 1000 chips per buy-in => 1 chip = 1 cent.
+// Buy-in is €10 = 1000 chips, so 1 chip = 1 cent.
 const BUY_IN = 10;
-const CHIPS = 1000;
 
 describe("computeNets", () => {
-  it("computes paid-in and net in cents (chips converted via ratio)", () => {
+  it("computes paid-in and net in cents (chips treated as cents)", () => {
     const nets = computeNets(
       players([
         { name: "Alice", buyIns: 1, finalValue: 0 },
@@ -28,7 +27,6 @@ describe("computeNets", () => {
         { name: "Charlie", buyIns: 2, finalValue: 1500 },
       ]),
       BUY_IN,
-      CHIPS,
     );
 
     expect(nets.find((n) => n.name === "Alice")).toMatchObject({
@@ -47,20 +45,6 @@ describe("computeNets", () => {
       netCents: -500,
     });
   });
-
-  it("handles non-1:1 chip ratios", () => {
-    // €10 buy-in, 500 chips per buy-in => 1 chip = 2 cents.
-    const nets = computeNets(
-      players([
-        { name: "A", buyIns: 1, finalValue: 250 }, // -> 500 cents
-        { name: "B", buyIns: 1, finalValue: 750 }, // -> 1500 cents
-      ]),
-      10,
-      500,
-    );
-    expect(nets[0]).toMatchObject({ finalValueCents: 500, netCents: -500 });
-    expect(nets[1]).toMatchObject({ finalValueCents: 1500, netCents: 500 });
-  });
 });
 
 describe("computeBalance", () => {
@@ -72,7 +56,6 @@ describe("computeBalance", () => {
         { name: "C", buyIns: 2, finalValue: 1500 },
       ]),
       BUY_IN,
-      CHIPS,
     );
     const b = computeBalance(nets);
     expect(b.isBalanced).toBe(true);
@@ -87,7 +70,6 @@ describe("computeBalance", () => {
         { name: "B", buyIns: 1, finalValue: 2000 },
       ]),
       BUY_IN,
-      CHIPS,
     );
     const b = computeBalance(nets);
     expect(b.isBalanced).toBe(false);
@@ -104,7 +86,6 @@ describe("calculateSettlement", () => {
         { id: "c", name: "Charlie", buyIns: 2, finalValue: 1500 },
       ]),
       BUY_IN,
-      CHIPS,
     );
     const transfers = calculateSettlement(nets);
     // Expected: Alice -> Bob €10, Charlie -> Bob €5
@@ -128,20 +109,17 @@ describe("calculateSettlement", () => {
         { name: "B", buyIns: 1, finalValue: 1000 },
       ]),
       BUY_IN,
-      CHIPS,
     );
     expect(calculateSettlement(nets)).toEqual([]);
   });
 
-  it("handles fractional chip-to-euro ratios cleanly via cent rounding", () => {
-    // 1250 chips at 1 chip = 1 cent => 1250 cents = €12.50
+  it("handles fractional euro outcomes via integer chip counts", () => {
     const nets = computeNets(
       players([
         { id: "a", name: "A", buyIns: 1, finalValue: 1250 },
         { id: "b", name: "B", buyIns: 1, finalValue: 750 },
       ]),
       BUY_IN,
-      CHIPS,
     );
     const transfers = calculateSettlement(nets);
     expect(transfers).toHaveLength(1);
@@ -162,7 +140,6 @@ describe("calculateSettlement", () => {
         { id: "c2", name: "C2", buyIns: 0, finalValue: 1500 },
       ]),
       BUY_IN,
-      CHIPS,
     );
     const transfers = calculateSettlement(nets);
     expect(transfers).toHaveLength(4);
@@ -184,7 +161,6 @@ describe("computeSummary", () => {
         { name: "Charlie", buyIns: 2, finalValue: 1500 },
       ]),
       BUY_IN,
-      CHIPS,
     );
     const transfers = calculateSettlement(nets);
     const s = computeSummary(nets, transfers);

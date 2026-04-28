@@ -4,15 +4,13 @@ export interface Player {
   id: PlayerId;
   name: string;
   buyIns: number;
-  /** Final value in CHIPS (not euros). Converted to cents using chipsPerBuyIn + buyInAmount. */
+  /** Final value in CHIPS. 1 buy-in always equals 100 × the buy-in amount in chips, so 1 chip = 1 cent. */
   finalValue: number;
 }
 
 export interface GameSettings {
   /** Buy-in amount in euros. */
   buyInAmount: number;
-  /** How many chips one buy-in is worth. Default 1000. */
-  chipsPerBuyIn: number;
 }
 
 export interface Game {

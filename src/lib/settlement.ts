@@ -4,21 +4,17 @@ import { eurosToCents } from "./formatting";
 /**
  * Compute per-player net amounts (in cents).
  *
- * `finalValue` is in CHIPS. With `buyInAmountEuros` and `chipsPerBuyIn`, one
- * chip is worth `buyInCents / chipsPerBuyIn` cents. We convert each player's
- * chip count to cents at the end (rounded to the nearest cent).
+ * `finalValue` is in CHIPS. One buy-in is always 100 × the buy-in amount in
+ * chips, so 1 chip equals 1 cent.
  */
 export function computeNets(
   players: Player[],
   buyInAmountEuros: number,
-  chipsPerBuyIn: number,
 ): PlayerNet[] {
   const buyInCents = eurosToCents(buyInAmountEuros);
-  const safeChips = chipsPerBuyIn > 0 ? chipsPerBuyIn : 1;
   return players.map((p) => {
     const paidInCents = Math.max(0, Math.floor(p.buyIns)) * buyInCents;
-    const finalChips = Math.max(0, p.finalValue);
-    const finalValueCents = Math.round((finalChips * buyInCents) / safeChips);
+    const finalValueCents = Math.max(0, Math.round(p.finalValue));
     return {
       playerId: p.id,
       name: p.name,

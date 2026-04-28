@@ -70,16 +70,21 @@ export function ShareSummary({ transfers, nets, unbalanced }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Share summary</CardTitle>
+        <CardTitle>Summary</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-3">
-        <pre className="whitespace-pre-wrap rounded-lg border border-border bg-muted/40 p-3 text-xs leading-relaxed">
+        <div className="relative">
+          <pre className="whitespace-pre-wrap rounded-lg border border-border bg-muted/40 p-3 pr-12 text-xs leading-relaxed">
 {text}
-        </pre>
-        <div>
-          <Button onClick={handleCopy} variant="secondary">
+          </pre>
+          <Button
+            onClick={handleCopy}
+            variant="secondary"
+            size="icon"
+            className="absolute bottom-2 right-2"
+            aria-label={copied ? "Copied" : "Copy summary"}
+          >
             {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-            {copied ? "Copied" : "Copy summary"}
           </Button>
         </div>
       </CardContent>

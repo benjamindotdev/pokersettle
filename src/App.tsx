@@ -23,7 +23,7 @@ function makeGame(name = "New game"): Game {
     name,
     createdAt: now,
     updatedAt: now,
-    settings: { buyInAmount: 10, chipsPerBuyIn: 1000 },
+    settings: { buyInAmount: 10 },
     players: [],
   };
 }
@@ -31,15 +31,7 @@ function makeGame(name = "New game"): Game {
 export default function App() {
   const [games, setGames] = useState<Game[]>(() => {
     const persisted = loadState();
-    // Back-fill chipsPerBuyIn for games saved before this field existed.
-    const migrated = persisted.games.map((g) => ({
-      ...g,
-      settings: {
-        ...g.settings,
-        chipsPerBuyIn: g.settings.chipsPerBuyIn ?? 1000,
-      },
-    }));
-    if (migrated.length > 0) return migrated;
+    if (persisted.games.length > 0) return persisted.games;
     return [makeGame("Friday night poker")];
   });
   const [activeGameId, setActiveGameId] = useState<string>(() => {
@@ -92,11 +84,6 @@ export default function App() {
   };
   const handleChangeBuyIn = (amount: number) =>
     updateActive((g) => ({ ...g, settings: { ...g.settings, buyInAmount: amount } }));
-  const handleChangeChipsPerBuyIn = (chips: number) =>
-    updateActive((g) => ({
-      ...g,
-      settings: { ...g.settings, chipsPerBuyIn: chips > 0 ? chips : 1 },
-    }));
 
   // Player-level handlers
   const handleAddPlayer = (name: string) =>
@@ -126,11 +113,11 @@ export default function App() {
     }));
 
   const players = activeGame?.players ?? [];
-  const settings = activeGame?.settings ?? { buyInAmount: 10, chipsPerBuyIn: 1000 };
+  const settings = activeGame?.settings ?? { buyInAmount: 10 };
 
   const nets = useMemo(
-    () => computeNets(players, settings.buyInAmount, settings.chipsPerBuyIn),
-    [players, settings.buyInAmount, settings.chipsPerBuyIn],
+    () => computeNets(players, settings.buyInAmount),
+    [players, settings.buyInAmount],
   );
   const balance = useMemo(() => computeBalance(nets), [nets]);
   const transfers = useMemo(() => calculateSettlement(nets), [nets]);
@@ -150,7 +137,6 @@ export default function App() {
             activeGameId={activeGame?.id ?? ""}
             settings={settings}
             onChangeBuyIn={handleChangeBuyIn}
-            onChangeChipsPerBuyIn={handleChangeChipsPerBuyIn}
             onSelectGame={handleSelectGame}
             onNewGame={handleNewGame}
             onResetGame={handleResetGame}
