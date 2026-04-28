@@ -125,12 +125,12 @@ export default function App() {
 
   return (
     <div className="min-h-full">
-      <div className="mx-auto max-w-5xl px-4 py-8 grid gap-6">
+      <div className="mx-auto max-w-3xl px-3 py-5 sm:px-4 sm:py-8 grid gap-5 sm:gap-6">
         <Header />
 
         <SummaryCards summary={summary} />
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
           <GameSettingsPanel
             games={games}
             activeGameId={activeGame?.id ?? ""}

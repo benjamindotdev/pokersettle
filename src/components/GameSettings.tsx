@@ -51,7 +51,7 @@ export function GameSettingsPanel({
             id="active-game"
             value={activeGameId}
             onChange={(e) => onSelectGame(e.target.value)}
-            className="h-10 w-full rounded-md border border-border bg-input px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            className="h-11 w-full rounded-md border border-border bg-input px-3 text-base sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
           >
             {games.map((g) => (
               <option key={g.id} value={g.id}>
@@ -69,6 +69,7 @@ export function GameSettingsPanel({
             <Input
               id="buy-in"
               type="number"
+              inputMode="decimal"
               min={0}
               step="0.01"
               className="pl-7"
