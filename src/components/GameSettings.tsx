@@ -1,7 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Plus, RotateCcw, Trash2 } from "lucide-react";
 import type { Game, GameSettings } from "@/types/poker";
 
 interface Props {
@@ -51,7 +52,6 @@ export function GameSettingsPanel({
     <Card>
       <CardHeader>
         <CardTitle>Game settings</CardTitle>
-        <CardDescription>Set the buy-in amount and switch between games by date.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2 sm:col-span-2">
@@ -92,24 +92,29 @@ export function GameSettingsPanel({
             />
           </div>
         </div>
-        <div className="grid gap-2">
-          <Label>Currency</Label>
-          <Input value={settings.currency} disabled readOnly />
-        </div>
         <div className="sm:col-span-2 flex flex-wrap gap-2 pt-2">
-          <Button variant="secondary" onClick={onNewGame}>
-            New game
+          <Button variant="secondary" onClick={onNewGame} aria-label="New game" title="New game">
+            <Plus className="size-4" />
+            <span className="sr-only sm:not-sr-only">New game</span>
           </Button>
-          <Button variant="outline" onClick={onResetGame}>
-            Reset current game
+          <Button
+            variant="outline"
+            onClick={onResetGame}
+            aria-label="Reset current game"
+            title="Reset current game"
+          >
+            <RotateCcw className="size-4" />
+            <span className="sr-only sm:not-sr-only">Reset</span>
           </Button>
           <Button
             variant="destructive"
             onClick={onDeleteGame}
             disabled={games.length <= 1}
+            aria-label={games.length <= 1 ? "Can't delete the only game" : "Delete this game"}
             title={games.length <= 1 ? "Can't delete the only game" : "Delete this game"}
           >
-            Delete game
+            <Trash2 className="size-4" />
+            <span className="sr-only sm:not-sr-only">Delete</span>
           </Button>
         </div>
       </CardContent>

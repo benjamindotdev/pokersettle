@@ -11,7 +11,6 @@ export interface Player {
 export interface GameSettings {
   /** Buy-in amount in euros. */
   buyInAmount: number;
-  currency: "EUR";
 }
 
 export interface Game {
