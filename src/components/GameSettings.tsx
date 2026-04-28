@@ -11,10 +11,17 @@ interface Props {
   onChangeBuyIn: (amount: number) => void;
   onSelectGame: (id: string) => void;
   onNewGame: () => void;
-  onRenameGame: (name: string) => void;
   onResetGame: () => void;
   onDeleteGame: () => void;
-  activeGameName: string;
+}
+
+function formatGameDate(ts: number): string {
+  const d = new Date(ts);
+  return d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  });
 }
 
 export function GameSettingsPanel({
@@ -24,28 +31,19 @@ export function GameSettingsPanel({
   onChangeBuyIn,
   onSelectGame,
   onNewGame,
-  onRenameGame,
   onResetGame,
   onDeleteGame,
-  activeGameName,
 }: Props) {
+  const sortedGames = [...games].sort((a, b) => b.createdAt - a.createdAt);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Game settings</CardTitle>
-        <CardDescription>Set the buy-in amount and manage saved games.</CardDescription>
+        <CardDescription>Set the buy-in amount and switch between games by date.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 sm:grid-cols-2">
-        <div className="grid gap-2">
-          <Label htmlFor="game-name">Game name</Label>
-          <Input
-            id="game-name"
-            value={activeGameName}
-            onChange={(e) => onRenameGame(e.target.value)}
-            placeholder="Friday night poker"
-          />
-        </div>
-        <div className="grid gap-2">
+        <div className="grid gap-2 sm:col-span-2">
           <Label htmlFor="active-game">Active game</Label>
           <select
             id="active-game"
@@ -53,9 +51,9 @@ export function GameSettingsPanel({
             onChange={(e) => onSelectGame(e.target.value)}
             className="h-11 w-full rounded-md border border-border bg-input px-3 text-base sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
           >
-            {games.map((g) => (
+            {sortedGames.map((g) => (
               <option key={g.id} value={g.id}>
-                {g.name || "Untitled game"}
+                {formatGameDate(g.createdAt)}
               </option>
             ))}
           </select>
@@ -73,7 +71,9 @@ export function GameSettingsPanel({
               min={0}
               step="0.01"
               className="pl-7"
-              value={Number.isFinite(settings.buyInAmount) ? settings.buyInAmount : 0}
+              placeholder="0"
+              value={!Number.isFinite(settings.buyInAmount) || settings.buyInAmount === 0 ? "" : settings.buyInAmount}
+              onFocus={(e) => e.currentTarget.select()}
               onChange={(e) => {
                 const v = parseFloat(e.target.value);
                 onChangeBuyIn(Number.isFinite(v) ? v : 0);

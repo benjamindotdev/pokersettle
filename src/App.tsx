@@ -70,15 +70,13 @@ export default function App() {
     setActiveGameId(g.id);
   };
   const handleSelectGame = (id: string) => setActiveGameId(id);
-  const handleRenameGame = (name: string) =>
-    updateActive((g) => ({ ...g, name }));
   const handleResetGame = () => {
     if (!confirm("Reset this game? This will clear all players and results.")) return;
     updateActive((g) => ({ ...g, players: [] }));
   };
   const handleDeleteGame = () => {
     if (games.length <= 1) return;
-    if (!confirm(`Delete "${activeGame.name}"? This can't be undone.`)) return;
+    if (!confirm("Delete this game? This can't be undone.")) return;
     setGames((prev) => {
       const next = prev.filter((g) => g.id !== activeGameId);
       return next;
@@ -134,12 +132,10 @@ export default function App() {
           <GameSettingsPanel
             games={games}
             activeGameId={activeGame?.id ?? ""}
-            activeGameName={activeGame?.name ?? ""}
             settings={settings}
             onChangeBuyIn={handleChangeBuyIn}
             onSelectGame={handleSelectGame}
             onNewGame={handleNewGame}
-            onRenameGame={handleRenameGame}
             onResetGame={handleResetGame}
             onDeleteGame={handleDeleteGame}
           />
