@@ -10,6 +10,7 @@ interface Props {
   activeGameId: string;
   settings: GameSettings;
   onChangeBuyIn: (amount: number) => void;
+  onChangeChipsPerBuyIn: (chips: number) => void;
   onSelectGame: (id: string) => void;
   onNewGame: () => void;
   onResetGame: () => void;
@@ -30,6 +31,7 @@ export function GameSettingsPanel({
   activeGameId,
   settings,
   onChangeBuyIn,
+  onChangeChipsPerBuyIn,
   onSelectGame,
   onNewGame,
   onResetGame,
@@ -88,6 +90,27 @@ export function GameSettingsPanel({
               }}
             />
           </div>
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="chips-per-buyin">Chips per buy-in</Label>
+          <Input
+            id="chips-per-buyin"
+            type="number"
+            inputMode="numeric"
+            min={1}
+            step={1}
+            placeholder="1000"
+            value={
+              !Number.isFinite(settings.chipsPerBuyIn) || settings.chipsPerBuyIn === 0
+                ? ""
+                : settings.chipsPerBuyIn
+            }
+            onFocus={(e) => e.currentTarget.select()}
+            onChange={(e) => {
+              const v = parseInt(e.target.value, 10);
+              onChangeChipsPerBuyIn(Number.isFinite(v) && v > 0 ? v : 0);
+            }}
+          />
         </div>
         <div className="sm:col-span-2 flex flex-wrap gap-2 pt-2">
           <Button variant="secondary" onClick={onNewGame} aria-label="New game" title="New game">

@@ -112,14 +112,15 @@ export function PlayerTable({ players, nets, onChangeBuyIns, onChangeFinalValue 
                         <Input
                           id={`fv-${p.id}`}
                           type="number"
-                          inputMode="decimal"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
                           min={0}
-                          step="0.01"
+                          step={1}
                           placeholder="0"
                           value={p.finalValue === 0 ? "" : p.finalValue}
                           onFocus={(e) => e.currentTarget.select()}
                           onChange={(e) => {
-                            const v = parseFloat(e.target.value);
+                            const v = parseInt(e.target.value, 10);
                             onChangeFinalValue(p.id, Number.isFinite(v) && v >= 0 ? v : 0);
                           }}
                         />
@@ -138,7 +139,7 @@ export function PlayerTable({ players, nets, onChangeBuyIns, onChangeFinalValue 
                     <th className="py-2 pr-3 font-medium">Player</th>
                     <th className="py-2 px-3 font-medium w-28">Buy-ins</th>
                     <th className="py-2 px-3 font-medium w-28">Paid in</th>
-                    <th className="py-2 px-3 font-medium w-36">Final chip value</th>
+                    <th className="py-2 px-3 font-medium w-36">Final chips</th>
                     <th className="py-2 pl-3 font-medium w-32">Net</th>
                   </tr>
                 </thead>
@@ -162,14 +163,14 @@ export function PlayerTable({ players, nets, onChangeBuyIns, onChangeFinalValue 
                         <td className="py-2 px-3">
                           <Input
                             type="number"
-                            inputMode="decimal"
+                            inputMode="numeric"
                             min={0}
-                            step="0.01"
+                            step={1}
                             placeholder="0"
                             value={p.finalValue === 0 ? "" : p.finalValue}
                             onFocus={(e) => e.currentTarget.select()}
                             onChange={(e) => {
-                              const v = parseFloat(e.target.value);
+                              const v = parseInt(e.target.value, 10);
                               onChangeFinalValue(p.id, Number.isFinite(v) && v >= 0 ? v : 0);
                             }}
                             className="h-9"

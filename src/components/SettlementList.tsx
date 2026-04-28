@@ -15,7 +15,6 @@ export function SettlementList({ transfers, nameById, unbalanced }: Props) {
       <CardHeader>
         <CardTitle>Settlement</CardTitle>
         <CardDescription>
-          The simplest set of transfers to settle the game.
           {unbalanced && (
             <span className="block text-warning mt-1">
               Note: totals are unbalanced — these transfers may not perfectly cancel out.

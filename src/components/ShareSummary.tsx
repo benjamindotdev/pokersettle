@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Copy, Check } from "lucide-react";
 import { formatCents, formatCentsSigned } from "@/lib/formatting";
@@ -71,7 +71,6 @@ export function ShareSummary({ transfers, nets, unbalanced }: Props) {
     <Card>
       <CardHeader>
         <CardTitle>Share summary</CardTitle>
-        <CardDescription>Copy the result as plain text.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-3">
         <pre className="whitespace-pre-wrap rounded-lg border border-border bg-muted/40 p-3 text-xs leading-relaxed">

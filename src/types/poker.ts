@@ -4,13 +4,15 @@ export interface Player {
   id: PlayerId;
   name: string;
   buyIns: number;
-  /** Final chip value in euros (display value). Stored as a number; converted to cents internally for math. */
+  /** Final value in CHIPS (not euros). Converted to cents using chipsPerBuyIn + buyInAmount. */
   finalValue: number;
 }
 
 export interface GameSettings {
   /** Buy-in amount in euros. */
   buyInAmount: number;
+  /** How many chips one buy-in is worth. Default 1000. */
+  chipsPerBuyIn: number;
 }
 
 export interface Game {
