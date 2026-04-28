@@ -1,15 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Plus, RotateCcw, Trash2 } from "lucide-react";
-import type { Game, GameSettings } from "@/types/poker";
+import type { Game } from "@/types/poker";
 
 interface Props {
   games: Game[];
   activeGameId: string;
-  settings: GameSettings;
-  onChangeBuyIn: (amount: number) => void;
   onSelectGame: (id: string) => void;
   onNewGame: () => void;
   onResetGame: () => void;
@@ -28,8 +25,6 @@ function formatGameDate(ts: number): string {
 export function GameSettingsPanel({
   games,
   activeGameId,
-  settings,
-  onChangeBuyIn,
   onSelectGame,
   onNewGame,
   onResetGame,
@@ -65,29 +60,6 @@ export function GameSettingsPanel({
               </option>
             ))}
           </select>
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="buy-in">Buy-in amount</Label>
-          <div className="relative">
-            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-              €
-            </span>
-            <Input
-              id="buy-in"
-              type="number"
-              inputMode="decimal"
-              min={0}
-              step="0.01"
-              className="pl-7"
-              placeholder="0"
-              value={!Number.isFinite(settings.buyInAmount) || settings.buyInAmount === 0 ? "" : settings.buyInAmount}
-              onFocus={(e) => e.currentTarget.select()}
-              onChange={(e) => {
-                const v = parseFloat(e.target.value);
-                onChangeBuyIn(Number.isFinite(v) ? v : 0);
-              }}
-            />
-          </div>
         </div>
         <div className="sm:col-span-2 flex flex-wrap gap-2 pt-2">
           <Button variant="secondary" onClick={onNewGame} aria-label="New game" title="New game">

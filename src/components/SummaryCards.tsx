@@ -20,7 +20,7 @@ export function SummaryCards({ summary }: Props) {
       icon: <Users className="size-4 text-primary" />,
     },
     {
-      label: "Transfers needed",
+      label: "Transfers",
       value: String(summary.transferCount),
       icon: <ArrowLeftRight className="size-4 text-primary" />,
     }
@@ -31,14 +31,15 @@ export function SummaryCards({ summary }: Props) {
       {items.map((it) => (
         <Card key={it.label}>
           <CardHeader className="pb-1">
-            <CardTitle className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              {it.icon}
-              {it.label}
+            <CardTitle title={it.value} className="text-2xl font-semibold truncate">
+                {it.value}
+             
+              
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
-            <p className="text-lg font-semibold truncate" title={it.value}>
-              {it.value}
+            <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wide" >
+              {it.label}
             </p>
           </CardContent>
         </Card>

@@ -135,8 +135,6 @@ export default function App() {
           <GameSettingsPanel
             games={games}
             activeGameId={activeGame?.id ?? ""}
-            settings={settings}
-            onChangeBuyIn={handleChangeBuyIn}
             onSelectGame={handleSelectGame}
             onNewGame={handleNewGame}
             onResetGame={handleResetGame}
@@ -144,9 +142,11 @@ export default function App() {
           />
           <PlayerForm
             players={players}
+            buyInAmount={settings.buyInAmount}
             onAdd={handleAddPlayer}
             onRemove={handleRemovePlayer}
             onRename={handleRenamePlayer}
+            onChangeBuyIn={handleChangeBuyIn}
           />
         </div>
 
@@ -170,9 +170,21 @@ export default function App() {
           nets={nets}
           unbalanced={!balance.isBalanced}
         />
-
-        <footer className="text-center text-xs text-muted-foreground py-4">
-          Local-only. Data is stored in your browser.
+        <footer className="flex flex-row gap-2 items-center justify-center">
+            <span className="text-sm text-inherit opacity-80">Built by</span>
+                <a
+                    href="https://benjamin.dev"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-opacity hover:opacity-100"
+                    aria-label="Built by benjamin.dev"
+                >
+                    <img
+                        src="/benjamin.jpeg"
+                        alt="benjamin.dev"
+                        className="h-5 w-5 rounded-full object-cover"
+                    />
+                </a>
         </footer>
       </div>
     </div>
